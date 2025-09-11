@@ -8,7 +8,7 @@ config = {
   'user': 'root',
   'password': '',
   'host': 'localhost',
-  'database': '3nf',
+  'database': 'hotel_booking',
   'raise_on_warnings': True
 }
 
@@ -56,4 +56,4 @@ if authenticate(username, password):
                 delete("room_details", "room_type", room_type)
                 print("Room deleted successfully.")
 else:
-    print("something went wrong")
+    print("may mali gar")
