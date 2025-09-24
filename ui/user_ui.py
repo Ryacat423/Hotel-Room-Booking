@@ -20,37 +20,35 @@ class UserUI:
     
     def view_available_rooms(self):
         try:
-            checkin = input("Enter check-in date (YYYY-MM-DD): ").strip()
-            checkout = input("Enter check-out date (YYYY-MM-DD): ").strip()
+            # checkin = input("Enter check-in date (YYYY-MM-DD): ").strip()
+            # checkout = input("Enter check-out date (YYYY-MM-DD): ").strip()
             
-            checkin_date = datetime.strptime(checkin, "%Y-%m-%d")
-            checkout_date = datetime.strptime(checkout, "%Y-%m-%d")
+            # checkin_date = datetime.strptime(checkin, "%Y-%m-%d")
+            # checkout_date = datetime.strptime(checkout, "%Y-%m-%d")
             
-            if checkin_date >= checkout_date:
-                print("✗ Check-out date must be after check-in date.")
-                return
+            # if checkin_date >= checkout_date:
+            #     print("✗ Check-out date must be after check-in date.")
+            #     return
             
-            rooms = self.booking_service.get_available_rooms_with_status(checkin_date, checkout_date)
+            rooms = self.booking_service.get_all_rooms()
             
             if rooms:
-                df = pd.DataFrame(rooms, columns=['Room #', 'Type', 'Capacity', 'Price', 'Status'])
-                df['Price'] = df['Price'].apply(lambda x: f"${x:.2f}" if x else "N/A")
+                df = pd.DataFrame(rooms, columns=['Room #', 'Type', 'Capacity', 'Price', 'Amenities'])
+                df['Price'] = df['Price'].apply(lambda x: f"{x:.2f}" if x else "N/A")
                 
                 print(f"\n" + "="*70)
-                print(f"         ROOMS AVAILABILITY ({checkin} to {checkout})")
+                # print(f"         ROOMS AVAILABILITY ({checkin} to {checkout})")
                 print("="*70)
                 print(df.to_string(index=False))
                 
-                available_df = df[df['Status'] == 'Available']
-                if not available_df.empty:
-                    print(f"\n" + "="*70)
-                    print("                    AVAILABLE ROOMS")
-                    print("="*70)
-                    print(available_df.to_string(index=False))
-                else:
-                    print("\n✗ No rooms available for the selected dates.")
-            else:
-                print("\n✗ No rooms found.")
+                # available_df = df[df['Status'] == 'Available']
+                # if not available_df.empty:
+                #     print(f"\n" + "="*70)
+                #     print("                    AVAILABLE ROOMS")
+                #     print("="*70)
+                #     print(available_df.to_string(index=False))
+                # else:
+                #     print("\n✗ No rooms available for the selected dates.")
                 
         except ValueError:
             print("✗ Invalid date format. Please use YYYY-MM-DD.")
@@ -115,7 +113,7 @@ class UserUI:
                 return
             
             df = pd.DataFrame(available_rooms, columns=['Room #', 'Type', 'Capacity', 'Price', 'Status'])
-            df['Price'] = df['Price'].apply(lambda x: f"${x:.2f}" if x else "N/A")
+            df['Price'] = df['Price'].apply(lambda x: f"{x:.2f}" if x else "N/A")
             
             print(f"\n" + "="*70)
             print("                    AVAILABLE ROOMS")
@@ -131,7 +129,7 @@ class UserUI:
                 if room_details:
                     detail = room_details[0]
                     amenities = detail[4] if detail[4] else "None"
-                    print(f"Room {detail[0]} - {detail[1]} | Capacity: {detail[2]} | Price: ${detail[3]:.2f}")
+                    print(f"Room {detail[0]} - {detail[1]} | Capacity: {detail[2]} | Price: {detail[3]:.2f}")
                     print(f"Amenities: {amenities}")
                     print("-" * 70)
             
@@ -150,8 +148,8 @@ class UserUI:
             print(f"Check-in: {checkin}")
             print(f"Check-out: {checkout}")
             print(f"Nights: {nights}")
-            print(f"Rate per night: ${selected_room[3]:.2f}")
-            print(f"Total Cost: ${total_cost:.2f}")
+            print(f"Rate per night: {selected_room[3]:.2f}")
+            print(f"Total Cost: {total_cost:.2f}")
             
             confirm = input("\nConfirm booking? (y/n): ")
             if confirm.lower() != 'y':
@@ -164,7 +162,7 @@ class UserUI:
             
             if booking_id:
                 print(f"✓ Booking confirmed! Booking ID: {booking_id}")
-                print(f"✓ Total Amount: ${total_cost:.2f}")
+                print(f"✓ Total Amount: {total_cost:.2f}")
             else:
                 print("✗ Failed to create booking.")
                 
