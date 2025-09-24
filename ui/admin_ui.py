@@ -14,6 +14,12 @@ class AdminUI:
             if self.admin_service.authenticate(username, password):
                 print("✓ Login successful!")
                 return True
+            elif len(username) < 3:
+                print("Username too short.")
+                return False
+            elif len(password) < 6:
+                print("Password too short")
+                return False
             else:
                 print("✗ Invalid credentials!")
                 return False
@@ -162,7 +168,7 @@ class AdminUI:
             details = self.admin_service.get_all_room_details()
             if details:
                 df = pd.DataFrame(details, columns=['Room Type', 'Price'])
-                df['Price'] = df['Price'].apply(lambda x: f"${x:.2f}")
+                df['Price'] = df['Price'].apply(lambda x: f"{x:.2f}")
                 print("\n" + "="*40)
                 print("         ROOM DETAILS")
                 print("="*40)
@@ -267,7 +273,7 @@ class AdminUI:
             rooms = self.admin_service.get_all_rooms()
             if rooms:
                 df = pd.DataFrame(rooms, columns=['Room #', 'Type', 'Capacity', 'Price', 'Amenities'])
-                df['Price'] = df['Price'].apply(lambda x: f"${x:.2f}" if x else "N/A")
+                df['Price'] = df['Price'].apply(lambda x: f"{x:.2f}" if x else "N/A")
                 df['Amenities'] = df['Amenities'].fillna('None')
                 print("\n" + "="*80)
                 print("                                ROOMS")
@@ -401,7 +407,7 @@ class AdminUI:
                     'Booking ID', 'First Name', 'Last Name', 'Room #', 
                     'Room Type', 'Check-in', 'Check-out', 'Status', 'Price'
                 ])
-                df['Price'] = df['Price'].apply(lambda x: f"${x:.2f}" if x else "N/A")
+                df['Price'] = df['Price'].apply(lambda x: f"{x:.2f}" if x else "N/A")
                 df['Check-in'] = pd.to_datetime(df['Check-in']).dt.strftime('%Y-%m-%d')
                 df['Check-out'] = pd.to_datetime(df['Check-out']).dt.strftime('%Y-%m-%d')
                 print("\n" + "="*100)
