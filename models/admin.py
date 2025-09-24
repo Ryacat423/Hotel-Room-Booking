@@ -9,7 +9,3 @@ class Admin(BaseModel):
         hashed_password = hashlib.sha1(password.encode()).hexdigest()
         result = self.select_where(['username', 'password'], (username, hashed_password))
         return bool(result)
-    
-    def create_admin(self, username, password):
-        hashed_password = hashlib.sha1(password.encode()).hexdigest()
-        return self.insert(['username', 'password'], (username, hashed_password))
